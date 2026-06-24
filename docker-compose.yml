@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  order-engine:
+    build: .
+    ports:
+      - "9000:9000"
+    environment:
+      - LOG_FILE=/var/log/app/engine.log
+    networks:
+      - frontend-gw
+      - backend-secure
+    volumes:
+      - ./live_logs:/var/log/app
+    depends_on:
+      - order-cache
+
+  order-cache:
+    image: "redis:7-alpine"
+    networks:
+      - backend-secure
+
+networks:
+  frontend-gw:
+  backend-secure:

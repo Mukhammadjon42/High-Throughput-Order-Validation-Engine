@@ -12,6 +12,26 @@ The system splits infrastructure into two isolated network zones to mirror stric
 1. **`frontend-gw` (Public Ingress):** Exposes port `9000` to allow client applications or upstream order routers to communicate with the Web API.
 2. **`backend-secure` (Private Data Tier):** A completely isolated network bridging the API and the Redis database cache. The Redis instance exposes no public ports to the host machine, mitigating external security threats.
 
+### 4. Reading and Auditing Logs (Support Operations)
+
+As a Production Support Specialist, you can monitor and audit the system logs using two different methodologies depending on your access rights:
+
+#### Method A: Tailing Logs from the Host Filesystem (Recommended)
+Because of the active volume bind-mount, logs are streamed directly to your host machine. You can read them using standard Linux command-line utilities without accessing the container:
+```bash
+
+# Dump all container console logs
+docker compose logs
+
+# Follow/stream live application logs dynamically
+docker compose logs -f order-engine
+
+# Read the entire log history
+cat live_logs/engine.log
+
+# Stream/tail the logs in real-time as trades come in
+tail -f live_logs/engine.log
+
 ```text
  [ Upstream Client / Curl ] 
             │
